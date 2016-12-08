@@ -6,7 +6,7 @@ class Node(object):
             self.user_data = user_data
 
     def __str__(self):
-        return self.num
+        return str(self.num)
 
 
 class Tree(object):
@@ -38,12 +38,11 @@ class Tree(object):
         while len(candidates) > 0:
             node = candidates.pop(0)
             distance = self._hamming(node.num, num)
+            if distance <= max_distance:
+                found.append(node)
 
-            if distance > max_distance:
-                continue
-
-            found.append(node)
-            candidates.extend(node[child] for child in node.children if distance - max_distance <= child <= distance + max_distance)
+            candidates.extend(child_node for child_dist, child_node in node.children.items()
+                    if distance - max_distance <= child_dist <= distance + max_distance)
 
         return found
 
